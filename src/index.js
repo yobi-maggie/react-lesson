@@ -1,30 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import src1 from './assets/1.jpg';
-import src2 from './assets/2.jpg';
-import src3 from './assets/3.jpg';
+// import react from 'react';
+import reactDOM from 'react-dom';
+import List from './component/list';
 
-import "./index.css";
-const srcs = [src1, src2, src3];
-let index = 0;
-let timer;
-const container =  document.getElementById('root');
-function render () {
-    ReactDOM.render(<img src={srcs[index]} alt={index}></img>, container)
-}
-function start () {
-    clearInterval(timer);
-    timer = setInterval(() => {
-        index = (index + 1) % 3;
-        render()
-    }, 1000)
+const container = document.getElementById('root');
+function getData() {
+    fetch('http://open.duyiedu.com/api/student/findAll?appkey=DuYimeiqi_1564986205860')
+        .then((res) => res.json())
+        .then((res) => {
+            render(res.data);
+        })
 }
 
-container.onmouseenter = () => {
-    clearInterval(timer);
+function render(data) {
+
+    const list = <ul>
+        <List data={data}></List>
+    </ul>
+    reactDOM.render(list, container)
 }
-container.onmouseleave = () => {
-    start()
-}
-render()
-start()
+
+
+getData()
